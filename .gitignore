@@ -1,0 +1,9 @@
+# MAC OS
+.DS_Store
+
+# Node/NPM
+node_modules
+
+# Project
+client/dist/bundle.js
+.env
