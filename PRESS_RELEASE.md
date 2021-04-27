@@ -70,10 +70,10 @@ Discord is a popular platform for finding teammates for numerous multiplayer gam
 Christopher Boyd, founding developer of "Team Player," has stated that "its often been cumbersome for users to move through server-after-server just to find other players they feel comfortable playing with - 'Team Player,' however, is a service that would allow for people to more directly control who they'd like to pair up with."
 
 > How To Get Started
-Getting started with "Team Player" is as easy as inputting your Discord username, and confirming your authenticity with a bot-sent DM. That's all you need to start setting up your player profile!
+Getting started with "Team Player" is as easy as inputting your Discord user id, and confirming your authenticity with a bot-sent DM. That's all you need to start setting up your player profile!
 
 > Customer Quote
 Customers such as Zebiah Stephens have described "Team Player" as "a really easy and fast way to find players for the games I'm interested in, and get connected with them over Discord."
 
 > Closing and Call to Action
-To start quickly finding Discord players for the multiplayer games you love, head over to ["Team Player" Web App URL here] in order to start building your player profile, and finding possible users to connect with.
+To start quickly finding Discord players for the multiplayer games you love, head over to ["Team Player" Web App URL here] in order to start building your player profile, and finding possible users to connect with. 
