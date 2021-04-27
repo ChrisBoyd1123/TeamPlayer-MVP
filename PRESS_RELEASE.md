@@ -44,3 +44,36 @@ Once the project moves into development, the press release can be used as a touc
 
 ## Closing and Call to Action
   > Wrap it up and give pointers where the reader should go next.
+
+
+## STUDENT RESPONSE ##
+
+> Project Name
+"Team Player"
+
+> Heading
+A Web App that helps connect Discord gamers.
+
+> Sub-Heading
+With "Team Player," gamers who use Discord to search for multiplayer games to join can centralize their search, and get to finding teammates faster and easier.
+
+> Summary
+"Team Player" is a web-app and Discord bot combo that lets gamers search for multiplayer teammates without the hassle of joining huge or inactive servers. Set up a player profile, search for other users you're interested in joining up with, and get in contact with them on Discord fast!
+
+> Problem
+Discord is a popular platform for finding teammates for numerous multiplayer games - however, users often have to navigate many, often large, servers to do so.
+
+> Solution
+"Team Player" solves this problem by cutting out the middle-man and allowing users to immediately find other players interested in similar games on Discord, all in one web app.
+
+> Quote From You
+Christopher Boyd, founding developer of "Team Player," has stated that "its often been cumbersome for users to move through server-after-server just to find other players they feel comfortable playing with - 'Team Player,' however, is a service that would allow for people to more directly control who they'd like to pair up with."
+
+> How To Get Started
+Getting started with "Team Player" is as easy as inputting your Discord username, and confirming your authenticity with a bot-sent DM. That's all you need to start setting up your player profile!
+
+> Customer Quote
+Customers such as Zebiah Stephens have described "Team Player" as "a really easy and fast way to find players for the games I'm interested in, and get connected with them over Discord."
+
+> Closing and Call to Action
+To start quickly finding Discord players for the multiplayer games you love, head over to ["Team Player" Web App URL here] in order to start building your player profile, and finding possible users to connect with.
