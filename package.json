@@ -1,0 +1,18 @@
+{
+  "name": "halfday-2020-08-mvp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^12.5.3"
+  },
+  "engines": {
+    "node": "12.14.1",
+    "npm": "6.13.4"
+  }
+}
