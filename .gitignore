@@ -6,4 +6,5 @@ node_modules
 
 # Project
 client/dist/bundle.js
+discord integration/botToken.js
 .env
