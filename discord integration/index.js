@@ -1,5 +1,5 @@
 //Import bot token.
-const { TOKEN } = require(`./botToken.js.js`);
+const { TOKEN } = require(`./botToken.js`);
 
 //Import DiscordJS Library
 const Discord = require('discord.js');
