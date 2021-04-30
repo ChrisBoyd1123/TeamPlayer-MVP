@@ -2,6 +2,7 @@
 const ReactDOM = require('react-dom');
 const express = require("express");
 const { routes } = require('./router.js');
+const path = require('path');
 
 const PORT = process.env.PORT || 8080;
 
