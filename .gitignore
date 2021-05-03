@@ -6,4 +6,5 @@ node_modules
 
 # Project
 client/dist/bundle.js
+client/dist/bundle.js.LICENSE.txt
 .env
