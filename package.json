@@ -6,9 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server/index.js",
-    "startBot": "node discord/index.js",
     "build": "webpack --config webpack.config.js",
-    "app": "npm run build && npm run start &&"
+    "app": "npm run build && npm run start"
   },
   "author": "",
   "license": "ISC",
