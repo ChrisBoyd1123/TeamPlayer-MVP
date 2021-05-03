@@ -1,8 +1,3 @@
-const path = require('path');
-
-//Access bot token.
-require('dotenv').config({ path: path.join(__dirname, '.env')});
-
 //Import DiscordJS Library
 const Discord = require('discord.js');
 const EventEmitter = require('events');
@@ -47,17 +42,8 @@ client.on('message', msg => {
     }
   })
 
-  client.on('test', () => {
-    console.log("user cache", client.users);
-    client.users.fetch(`299722286947368974`).then((result) => {
-     // result.send('lol4');
-    })
-  })
+////////////////////////////
+// EXPORTING DISCORD BOT //
+//////////////////////////
 
-  client.emit('test');
-
-////////////////////////////////////
-// CONNECTING BOT TO DISCORD API //
-//////////////////////////////////
-console.log(process.env);
-client.login(process.env.BOT_TOKEN);
+module.exports.BOT_CLIENT = client;
