@@ -5,7 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --config webpack.config.js"
+    "start": "node server/index.js",
+    "startBot": "node discord/index.js",
+    "build": "webpack --config webpack.config.js",
+    "app": "npm run build && npm run start &&"
   },
   "author": "",
   "license": "ISC",
