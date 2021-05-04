@@ -2,31 +2,31 @@
 //should be included below:
 
 //Should use db/helpers functions.
-const { resolve } = require('node:path');
 const { createHash, createKey, createSalt } = require('../server/auth/authUtils.js');
 const { createUser, findUser } = require('../server/db/helpers.js');
 
 const checkInitUser = (userObj) => {
 
-  let userPresent = undefined;
-
-  findUser({userId: userObj.id})
+  return new Promise((resolve, reject) => {
+    findUser({userId: userObj.id})
     .then((dataArr) => {
     if(!dataArr || !dataArr.length){
-      userPresent = false;
+      resolve(false);
     }
-    userPresent = true;
+      resolve(true);
     })
     .catch((err) => {
-    console.error(err);
+    reject(err);
     })
-
-  return userPresent;
+  })
 
 }
 
-module.exports.initUser = (userObj) => {
-  console.log("Check Init User test", checkInitUser(userObj));
+module.exports.initUser = async (userObj) => {
+  const userCheck = await checkInitUser(userObj)
+  if(userCheck){
+    return "nope!";
+  }
   
   const uKey = createKey();
   const uSalt = createSalt();
@@ -43,10 +43,6 @@ module.exports.initUser = (userObj) => {
     salt: uSalt,
     session: createSalt()
   })
-  .then((user) => {
-    console.log(user);
-  })
 
-  console.log("sending key");
   return uKey;
 }
