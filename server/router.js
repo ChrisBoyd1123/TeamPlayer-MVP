@@ -67,8 +67,7 @@ router.post('/signingIn', (req, res) => {
       res.redirect('/signIn');
     }else{
       if(compareHash(key, dataArr[0].salt, dataArr[0].hash)){
-        res.cookie('session', dataArr[0].session);
-        res.redirect('/playerProfile');
+        res.cookie('session', dataArr[0].session).end();
       }else{
         res.redirect('/signIn');
       }
