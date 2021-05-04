@@ -1,5 +1,4 @@
 // TODO
-const ReactDOM = require('react-dom');
 const express = require("express");
 const path = require('path');
 
@@ -11,7 +10,7 @@ const { db } = require('./db/index.js');
 require('dotenv').config();
 
 const PORT = process.env.PORT || 8080;
-const CLIENT_PATH = path.resolve(__dirname, '../client/dist');
+const CLIENT_PATH = path.join(__dirname, '../client/dist');
 
 const app = express();
 
