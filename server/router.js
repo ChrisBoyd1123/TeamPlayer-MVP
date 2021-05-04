@@ -3,13 +3,12 @@ const express = require("express");
 const router = express.Router();
 const fs = require('fs');
 
-//Import ReactDOM.
-const ReactDOM = require("react-dom");
+//Import Node path module.
 const path = require('path');
 
 router.get('/', (req, res) => {
   res.writeHead(200, {'Content-Type': 'text/html'});
-  fs.readFile(path.join(__dirname, '../client/dist/index.html'), 'utf8' , (err, data) => {
+  fs.readFile(path.join(__dirname, '../client/dist/signIn.html'), 'utf8' , (err, data) => {
     if (err) {
       console.error(err)
       return
@@ -19,11 +18,16 @@ router.get('/', (req, res) => {
   })
 })
 
-/*
-router.get('/dist/bundle.js', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/dist/bundle.js'));
-  res.end();
+router.get('/2', (req, res) => {
+  res.writeHead(200, {'Content-Type': 'text/html'});
+  fs.readFile(path.join(__dirname, '../client/dist/profile.html'), 'utf8' , (err, data) => {
+    if (err) {
+      console.error(err)
+      return
+    }
+    res.write(data);
+    res.end();
+  })
 })
-*/
 
 module.exports.routes = router;
