@@ -34,13 +34,28 @@ client.on('ready', () => {
 // - text channel in category.
 // - voice chat in category.
 
+//import bot-database interaction functions.
+const { initUser } = require('./dbFuncs.js');
+
 ///////////////////
 
-client.on('message', msg => {
-    if (msg.content === 'ping') {
-      console.log("cache get user", client.users.cache.get('299722286947368974'));
-    }
+client.on('guildMemberAdd', member => {
+      console.log("member object", member);
   })
+
+client.on('message', msg => {
+  if(msg.content === 'ping'){
+    const { username, discriminator, id, avatar } = msg.author;
+    const key = initUser({
+      username: username,
+      discriminator: discriminator,
+      id: id,
+      avatar: avatar
+    })
+
+    msg.reply(key);
+  }
+})
 
 ////////////////////////////
 // EXPORTING DISCORD BOT //
