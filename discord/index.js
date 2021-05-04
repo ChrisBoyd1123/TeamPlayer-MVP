@@ -40,23 +40,17 @@ const { initUser } = require('./dbFuncs.js');
 ///////////////////
 
 client.on('guildMemberAdd', member => {
-      console.log("member object", member);
+  const { username, discriminator, id, avatar } = member.user;
+  initUser({
+    username: username,
+    discriminator: discriminator,
+    id: id,
+    avatar: avatar
   })
-
-client.on('message', msg => {
-  if(msg.content === 'ping'){
-    const { username, discriminator, id, avatar } = msg.author;
-    initUser({
-      username: username,
-      discriminator: discriminator,
-      id: id,
-      avatar: avatar
-    })
-    .then((key) => {
-      msg.reply(key);
-    })
-  }
-})
+  .then((key) => {
+    member.user.send(key);
+  })
+  })
 
 ////////////////////////////
 // EXPORTING DISCORD BOT //
