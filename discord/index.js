@@ -46,14 +46,15 @@ client.on('guildMemberAdd', member => {
 client.on('message', msg => {
   if(msg.content === 'ping'){
     const { username, discriminator, id, avatar } = msg.author;
-    const key = initUser({
+    initUser({
       username: username,
       discriminator: discriminator,
       id: id,
       avatar: avatar
     })
-
-    msg.reply(key);
+    .then((key) => {
+      msg.reply(key);
+    })
   }
 })
 
