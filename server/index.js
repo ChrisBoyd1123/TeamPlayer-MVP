@@ -1,6 +1,7 @@
 // TODO
 const express = require("express");
 const path = require('path');
+const cookieParser = require('cookie-parser');
 
 const { routes } = require('./router.js');
 const { BOT_CLIENT } = require('../discord/index.js');
@@ -14,7 +15,7 @@ const CLIENT_PATH = path.join(__dirname, '../client/dist');
 
 const app = express();
 
-
+app.use(cookieParser());
 app.use(express.static(CLIENT_PATH));
 app.use('/', routes);
 
