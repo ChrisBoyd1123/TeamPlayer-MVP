@@ -1,7 +1,7 @@
 // TODO
 const React = require('react');
 
-export default class App2 extends React.Component{
+export default class Profile extends React.Component{
   render() {
     return (
       <div className="profile">
