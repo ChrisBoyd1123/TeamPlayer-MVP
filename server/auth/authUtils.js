@@ -21,3 +21,7 @@ module.exports.createKey = () => {
 module.exports.createSalt = () => {
   return crypto.randomBytes(12).toString('hex');
 }
+
+module.exports.compareHash = (key, salt, hash) => {
+  return (this.createHash(key, salt) === hash);
+}
