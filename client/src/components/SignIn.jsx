@@ -19,7 +19,7 @@ export default class SignIn extends React.Component{
     
     const config = {
       method: 'post',
-      url: `http://${process.env.IP}:${process.env.PORT}/signingIn`,
+      url: `/signingIn`,
       headers: { 
         'Content-Type': 'application/json'
       },
@@ -30,7 +30,7 @@ export default class SignIn extends React.Component{
     //server /signingIn route.
     axios(config)
     .then(() => {
-      window.location.replace(`http://${process.env.IP}:${process.env.PORT}/`);
+      window.location.replace(`/`);
     })
     .catch(function (err) {
       console.log(err);
