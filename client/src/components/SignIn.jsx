@@ -19,7 +19,7 @@ export default class SignIn extends React.Component{
     
     const config = {
       method: 'post',
-      url: 'http://127.0.0.1:8080/signingIn',
+      url: `http://${process.env.IP}:${process.env.PORT}/signingIn`,
       headers: { 
         'Content-Type': 'application/json'
       },
@@ -30,7 +30,7 @@ export default class SignIn extends React.Component{
     //server /signingIn route.
     axios(config)
     .then(() => {
-      window.location.replace('http://127.0.0.1:8080/');
+      window.location.replace(`http://${process.env.IP}:${process.env.PORT}/`);
     })
     .catch(function (err) {
       console.log(err);
