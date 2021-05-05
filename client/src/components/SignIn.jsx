@@ -29,6 +29,9 @@ export default class SignIn extends React.Component{
     //TODO: Find way to reload page after acquiring session from
     //server /signingIn route.
     axios(config)
+    .then(() => {
+      window.location.replace('http://127.0.0.1:8080/');
+    })
     .catch(function (err) {
       console.log(err);
     });
