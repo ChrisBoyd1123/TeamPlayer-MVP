@@ -1,8 +1,6 @@
 // TODO
 const path = require('path');
 const { webpack } = require('webpack');
-const webpackPlugin = require('webpack');
-const { envKeys } = require('./webpackEnv.js');
 
 module.exports = {
   entry: path.join(__dirname, 'client/src/index.jsx'),
@@ -18,8 +16,5 @@ module.exports = {
         use: ['babel-loader'],
       },
     ],
-  },
-  plugins: [
-    new webpackPlugin.DefinePlugin(envKeys)
-  ]
+  }
 };
