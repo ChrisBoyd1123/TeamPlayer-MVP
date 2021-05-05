@@ -1,6 +1,5 @@
 // TODO
 const path = require('path');
-const dotenv = require('dotenv');
 const { webpack } = require('webpack');
 const webpackPlugin = require('webpack');
 const { envKeys } = require('./webpackEnv.js');
