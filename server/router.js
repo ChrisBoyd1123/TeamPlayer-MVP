@@ -7,23 +7,16 @@ const fs = require('fs');
 const path = require('path');
 
 //Import database interaction helper functions.
-const { findUser } = require('../server/db/helpers.js');
-const { compareHash } = require('../server/auth/authUtils.js');
+const { findUserByNmDc } = require('./db/helpers.js');
+const { compareHash, verifySession } = require('../server/auth/authUtils.js');
 
 router.get('/', (req, res) => {
-  const { session } = req.cookies;
-  if(!session){
-    res.redirect('/signIn');
-  }else{
-    findUser({ session: session })
-    .then((dataArr) => {
-      if(!dataArr || !dataArr.length){
-        res.redirect('/signIn');
-      }else{
-        res.redirect('/playerProfile');
-      }
-    })
-  }
+  verifySession(req, res)
+  .then((sessionPresent) => {
+    if(sessionPresent){
+      res.redirect('/playerProfile');
+    }
+  })
 })
 
 router.get('/signIn', (req, res) => {
@@ -39,14 +32,19 @@ router.get('/signIn', (req, res) => {
 })
 
 router.get('/playerProfile', (req, res) => {
-  res.writeHead(200, {'Content-Type': 'text/html'});
-  fs.readFile(path.join(__dirname, '../client/dist/profile.html'), 'utf8' , (err, data) => {
-    if (err) {
-      console.error(err)
-      return
+  verifySession(req, res)
+  .then((sessionPresent) => {
+    if(sessionPresent){
+      res.writeHead(200, {'Content-Type': 'text/html'});
+      fs.readFile(path.join(__dirname, '../client/dist/profile.html'), 'utf8' , (err, data) => {
+        if (err) {
+          console.error(err)
+          return
+        }
+        res.write(data);
+        res.end();
+      })
     }
-    res.write(data);
-    res.end();
   })
 })
 
@@ -61,7 +59,7 @@ router.post('/signingIn', (req, res) => {
 
   const userAndDis = username.split("#");
 
-  findUser({username: userAndDis[0], discriminator: userAndDis[1]})
+  findUserByNmDc({username: userAndDis[0], discriminator: userAndDis[1]})
   .then((dataArr) => {
     if(!dataArr || !dataArr.length){
       res.redirect('/signIn');
