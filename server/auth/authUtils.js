@@ -3,6 +3,8 @@
 
 const crypto = require('crypto');
 
+const { findUserBySession } = require('../db/helpers.js');
+
 //Generates a hash based on data and a given salt.
 module.exports.createHash = (data, salt = '') => {
   const shasum = crypto.createHash('sha1');
@@ -24,4 +26,28 @@ module.exports.createSalt = () => {
 
 module.exports.compareHash = (key, salt, hash) => {
   return (this.createHash(key, salt) === hash);
+}
+
+module.exports.verifySession = (req, res) => {
+
+  return new Promise ((resolve, reject) => {
+    const { session } = req.cookies;
+    if(!session){
+      res.redirect('/signIn');
+      resolve(false);
+    }else{
+      findUserBySession({ session: session })
+      .then((dataArr) => {
+        if(!dataArr || !dataArr.length){
+          res.redirect('/signIn');
+          resolve(false);
+        }else{
+          resolve(true);
+        }
+      })
+      .catch((err) => {
+      reject(err);
+      })
+    }
+  })
 }
