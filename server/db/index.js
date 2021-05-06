@@ -1,38 +1,21 @@
-// TODO
-const mongoose = require('mongoose');
-
-const DATABASE_NAME = 'playerbase';
-const DATABASE_URI = process.env.MONGO_URI || `mongodb://localhost/${DATABASE_NAME}`;
+//TODO
+const { sequelize, User, Hash, Salt, Session, Game, UserGame } = require("./initSequelize");
+const { initializeSchema } = require('./initSchema');
 
 const DATABASE_START = () => {
   return new Promise ((resolve, reject) => {
-    mongoose.connect(DATABASE_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true
-    })
+    sequelize.authenticate()
     .then(() => {
-      console.log('Successfully connected to database.')
-    resolve();
-  })
+      initializeSchema()
+      .then(() => {
+        console.log('sql database authenticated.');
+        resolve();
+      })
+     })
     .catch((err) => {
-      console.log(`Error connecting to database:${err}`)
-    reject();
-  });
+      console.log(err);
+      reject(err); })
   })
 }
 
-const userSchema = new mongoose.Schema({
-  username: String,
-  discriminator: Number,
-  userId: Number,
-  avatar: String,
-  games: [String],
-  hash: String,
-  salt: String,
-  session: String,
-})
-
-const User = mongoose.model('User', userSchema);
-
 module.exports.db = DATABASE_START;
-module.exports.User = User;
