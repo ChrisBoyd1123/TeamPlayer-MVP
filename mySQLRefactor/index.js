@@ -1,7 +1,8 @@
 //TODO
 const { sequelize, User, Hash, Salt, Session, Game, UserGame } = require("./initSequelize");
-
 const { initializeSchema } = require('./initSchema');
+
+const { createUser } = require('./helpers.js');
 
 const DATABASE_START = () => {
   return new Promise ((resolve, reject) => {
@@ -18,5 +19,7 @@ const DATABASE_START = () => {
       reject(err); })
   })
 }
+
+DATABASE_START();
 
 module.exports.db = DATABASE_START;
