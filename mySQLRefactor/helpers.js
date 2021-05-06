@@ -57,8 +57,110 @@ module.exports.createUser = (userData) => {
 //relational SQL database environment.
 
 //Make multiple "find" helper functions based on what is needed by the web app.
-module.exports.findUser = (criteria) => {
+
+//*findUser by Discord Id.
+//*findUser by username and discriminator.
+//*findUser by session.
+
+//Each helper function should send back a "complete" user object - 
+//appropriate non-id hash, salt, and session values included.
+module.exports.findUserById = ({ userId }) => {
   return new Promise((resolve, reject) => {
-    
+    let returnUser = {};
+    User.findOne({ where: {userId: userId}})
+    .then((foundUser) => {
+      const {username, discriminator, avatar, userId, HashId, SaltId, SessionId} = foundUser;
+      returnUser.username = username;
+      returnUser.discriminator = discriminator;
+      returnUser.avatar = avatar;
+      returnUser.userId = userId;
+
+      Hash.findOne({ where: {id: HashId}})
+      .then((foundHash) => {
+        returnUser.hash = foundHash.hash;
+
+        Salt.findOne({ where: {id: SaltId}})
+        .then((foundSalt) => {
+          returnUser.salt = foundSalt.salt;
+
+          Session.findOne({ where: {id: SessionId}})
+          .then((foundSession) => {
+            returnUser.session = foundSession.session;
+
+            resolve([returnUser]);
+          })
+        })
+      })
+    })
+    .catch((err) => {
+      reject(err);
+    })
+  })
+}
+
+module.exports.findUserByNmDc = ({ username, discriminator }) => {
+  return new Promise((resolve, reject) => {
+    let returnUser = {};
+    User.findOne({ where: {username: username, discriminator: discriminator}})
+    .then((foundUser) => {
+      const {username, discriminator, avatar, userId, HashId, SaltId, SessionId} = foundUser;
+      returnUser.username = username;
+      returnUser.discriminator = discriminator;
+      returnUser.avatar = avatar;
+      returnUser.userId = userId;
+
+      Hash.findOne({ where: {id: HashId}})
+      .then((foundHash) => {
+        returnUser.hash = foundHash.hash;
+
+        Salt.findOne({ where: {id: SaltId}})
+        .then((foundSalt) => {
+          returnUser.salt = foundSalt.salt;
+
+          Session.findOne({ where: {id: SessionId}})
+          .then((foundSession) => {
+            returnUser.session = foundSession.session;
+
+            resolve([returnUser]);
+          })
+        })
+      })
+    })
+    .catch((err) => {
+      reject(err);
+    })
+  })
+}
+
+module.exports.findUserBySession = ({ session }) => {
+  return new Promise((resolve, reject) => {
+    let returnUser = {};
+    Session.findOne({ where: {session: session}})
+        .then((foundSession) => {
+          returnUser.session = foundSession.session;
+
+            User.findOne({ where: {SessionId: foundSession.id}})
+            .then((foundUser) => {
+              const {username, discriminator, avatar, userId, HashId, SaltId } = foundUser;
+              returnUser.username = username;
+              returnUser.discriminator = discriminator;
+              returnUser.avatar = avatar;
+              returnUser.userId = userId;
+
+              Hash.findOne({ where: {id: HashId}})
+                .then((foundHash) => {
+                returnUser.hash = foundHash.hash;
+
+                Salt.findOne({ where: {id: SaltId}})
+                  .then((foundSalt) => {
+                      returnUser.salt = foundSalt.salt;
+                      resolve([returnUser]);
+                    })
+                  })
+      })
+    })
+    .catch((err) => {
+      reject(err);
+    })
   })
 }
