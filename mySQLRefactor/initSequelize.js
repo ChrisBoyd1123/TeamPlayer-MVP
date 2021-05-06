@@ -14,7 +14,7 @@ new Sequelize(DATABASE_URI)
 });
 
   const User = sequelize.define('User', {
-      name: {
+      username: {
         type: STRING
       },
       discriminator: {
