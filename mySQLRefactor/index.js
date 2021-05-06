@@ -2,7 +2,7 @@
 const { sequelize, User, Hash, Salt, Session, Game, UserGame } = require("./initSequelize");
 const { initializeSchema } = require('./initSchema');
 
-const { createUser } = require('./helpers.js');
+const { createUser, findUserById, findUserByNmDc, findUserBySession } = require('./helpers.js');
 
 const DATABASE_START = () => {
   return new Promise ((resolve, reject) => {
