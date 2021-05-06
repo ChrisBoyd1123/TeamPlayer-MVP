@@ -13,7 +13,43 @@ module.exports.createUser = (userData) => {
   //* session
 
   return new Promise ((resolve, reject) => {
-    
+    let hashId;
+    let saltId;
+    let sessionId;
+
+    Hash.create({hash: userData.hash})
+    .then((hashData) => {
+      hashId = hashData.dataValues.id;
+    })
+    .then(() => {
+      Salt.create({salt: userData.salt})
+      .then((saltData) => {
+        saltId = saltData.dataValues.id;
+      })
+      .then(() => {
+        Session.create({session: userData.session})
+        .then((sessionData) => {
+          sessionId = sessionData.dataValues.id;
+        })
+        .then(() => {
+          User.create({
+            username: userData.username,
+            discriminator: userData.discriminator,
+            userId: userData.userId,
+            avatar: userData.avatar,
+            HashId: hashId,
+            SaltId: saltId,
+            SessionId: sessionId
+          })
+          .then((user) => {
+            resolve(user);
+          })
+          .catch((err) => {
+            reject(err);
+          })
+        })
+      })
+    })
   })
 }
 
