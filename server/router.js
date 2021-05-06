@@ -7,7 +7,7 @@ const fs = require('fs');
 const path = require('path');
 
 //Import database interaction helper functions.
-const { findUserByNmDc } = require('./db/helpers.js');
+const { findUserByNmDc, findUserBySession } = require('./db/helpers.js');
 const { compareHash, verifySession } = require('../server/auth/authUtils.js');
 
 router.get('/', (req, res) => {
@@ -70,6 +70,18 @@ router.post('/signingIn', (req, res) => {
         res.redirect('/signIn');
       }
     }
+  })
+})
+
+router.get('/userData', (req, res) => {
+  verifySession(req, res)
+  .then(() => {
+    const { session } = req.cookies;
+
+    findUserBySession({session: session})
+    .then((data) => {
+      res.send(JSON.stringify(data[0]));
+    })
   })
 })
 
