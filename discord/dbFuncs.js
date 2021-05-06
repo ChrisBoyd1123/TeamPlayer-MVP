@@ -3,12 +3,12 @@
 
 //Should use db/helpers functions.
 const { createHash, createKey, createSalt } = require('../server/auth/authUtils.js');
-const { createUser, findUser } = require('../server/db/helpers.js');
+const { createUser, findUserById } = require('../server/db/helpers.js');
 
 const checkInitUser = (userObj) => {
 
   return new Promise((resolve, reject) => {
-    findUser({userId: userObj.id})
+    findUserById({userId: userObj.id})
     .then((dataArr) => {
     if(!dataArr || !dataArr.length){
       resolve(false);
