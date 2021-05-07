@@ -7,7 +7,7 @@ const fs = require('fs');
 const path = require('path');
 
 //Import database interaction helper functions.
-const { findUserByNmDc, findUserBySession, addGame, findUsersGames } = require('./db/helpers.js');
+const { findUserByNmDc, findUserBySession, addGame, findUsersGames, findUsersWithSimilarGames, findUserById } = require('./db/helpers.js');
 const { compareHash, verifySession } = require('../server/auth/authUtils.js');
 
 router.get('/', (req, res) => {
@@ -120,7 +120,8 @@ router.post('/newGame', (req, res) => {
 router.get('/listing', (req, res) => {
   verifySession(req, res)
   .then((sessionPresent) => {
-    res.writeHead(200, {'Content-Type': 'text/html'});
+    if(sessionPresent){
+      res.writeHead(200, {'Content-Type': 'text/html'});
       fs.readFile(path.join(__dirname, '../client/dist/listing.html'), 'utf8' , (err, data) => {
         if (err) {
           console.error(err)
@@ -129,6 +130,45 @@ router.get('/listing', (req, res) => {
         res.write(data);
         res.end();
       })
+    }
+  })
+})
+
+router.get('/usersWithSimilarGames' , (req, res) => {
+  verifySession(req, res)
+  .then((sessionPresent) => {
+    if(sessionPresent){
+      const { session } = req.cookies;
+      findUsersWithSimilarGames(session)
+      .then((usersWithSimilarGames) => {
+        findUserBySession({ session: session})
+        .then((data) => {
+          const { username } = data[0];
+          usersWithSimilarGames.forEach((userObj, uOIndex) => {
+            if(userObj.username === username){
+              usersWithSimilarGames.splice(uOIndex, 1);
+            }
+          })
+
+          res.send(JSON.stringify({UWSG: usersWithSimilarGames}));
+        })
+      })
+    }
+  })
+})
+
+router.post('/userById', (req, res) => {
+  verifySession(req, res)
+  .then((sessionPresent) => {
+    if(sessionPresent){
+      findUserById(req.body)
+      .then((foundUser) => {
+        res.send(JSON.stringify({
+          username: foundUser.username,
+          discriminator: foundUser.discriminator
+        }));
+      })
+    }
   })
 })
 
