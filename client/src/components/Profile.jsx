@@ -35,7 +35,7 @@ export default class Profile extends React.Component{
 
     this.setState({username: data.username});
     this.setState({discriminator: 
-    data.discriminator.length === 4 ?
+    data.discriminator.length < 4 ?
     data.discriminator :
     '0'+data.discriminator})
     this.setState({avatar: data.avatar !== 'null' ?
