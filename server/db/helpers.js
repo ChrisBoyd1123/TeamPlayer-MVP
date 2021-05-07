@@ -261,3 +261,62 @@ module.exports.findUsersGames = (userSession) => {
           })
   })
 }
+
+//TODO: A helper function returns an array of user objects,
+//representative of the players that share a game with a
+//given user.
+
+module.exports.findUsersWithSimilarGames = (userSession) => {
+  const context = this;
+
+  return new Promise((scopeResolve, scopeReject) => {
+
+  context.findUsersGames(userSession)
+  .then((gameNameArr) => {
+    let UsersWithSimGames = [];
+
+    const pushSimUserIds = new Promise((resolve, reject) => {
+      gameNameArr.forEach((gameName, nameIndex) => {
+        Game.findOne({ where: {game: gameName}})
+        .then((foundGame) => {
+          UserGame.findAll({ where: {GameId: foundGame.id}})
+          .then((userGameData) => {
+            if(!userGameData || !userGameData.length){
+              resolve(null);
+              return;
+            }
+
+            userGameData.forEach((userGameObj, uGOIndex) => {
+              UsersWithSimGames.push(userGameObj.dataValues.UserId);
+            })
+          })
+          .then(() => {
+            if(nameIndex === gameNameArr.length - 1){
+              resolve();
+            }
+          })
+        })
+      })
+    })
+
+    pushSimUserIds.then(() => {
+      const uniqueUWSG = [...new Set(UsersWithSimGames)];
+      let returnUsers = [];
+
+      uniqueUWSG.forEach((UWSGId, UWSGIndex) => {
+        User.findOne({ where:{id: UWSGId}})
+        .then((foundUser) => {
+          returnUsers.push({
+            username: foundUser.username,
+            discriminator: foundUser.discriminator,
+            userId: foundUser.userId
+          })
+          if(returnUsers.length === uniqueUWSG.length){
+            scopeResolve(returnUsers);
+          }
+        })
+      })
+    })
+  })
+  })
+}
