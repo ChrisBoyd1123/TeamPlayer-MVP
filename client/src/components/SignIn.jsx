@@ -40,7 +40,7 @@ export default class SignIn extends React.Component{
   render() {
     return (
       <div className="signin">
-        <div>lol</div>
+        <div>Discord Username (name#1234) and Player Profile Key:</div>
         <div>
         <input type="text" id='usernameInput'></input>
         <input type="text" id='keyInput'></input>
