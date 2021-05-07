@@ -10,6 +10,8 @@ const path = require('path');
 const { findUserByNmDc, findUserBySession, addGame, findUsersGames, findUsersWithSimilarGames, findUserById } = require('./db/helpers.js');
 const { compareHash, verifySession } = require('../server/auth/authUtils.js');
 
+const { createServerLobby } = require('../discord/index');
+
 router.get('/', (req, res) => {
   verifySession(req, res)
   .then((sessionPresent) => {
@@ -167,6 +169,21 @@ router.post('/userById', (req, res) => {
           username: foundUser.username,
           discriminator: foundUser.discriminator
         }));
+      })
+    }
+  })
+})
+
+router.post('/createLobby', (req, res) => {
+  verifySession(req, res)
+  .then((sessionPresent) => {
+    if(sessionPresent){
+      const { session } = req.cookies;
+      findUserBySession({session: session})
+      .then((userDataArr) => {
+        const user1Id = userDataArr[0].userId;
+        const user2Id = req.body.userId;
+        createServerLobby(user1Id, user2Id);
       })
     }
   })
