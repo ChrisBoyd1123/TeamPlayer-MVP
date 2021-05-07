@@ -10,6 +10,26 @@ export default class Listing extends React.Component{
     this.state = {
       session: Cookies.get('session'),
     }
+
+    this.handleServerLobbyRequest = this.handleServerLobbyRequest.bind(this);
+  }
+
+  handleServerLobbyRequest() {
+    const context = this;
+
+    const data = JSON.stringify(
+      {"userId": context.props.userId});
+    
+    const config = {
+      method: 'post',
+      url: `/createLobby`,
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      data : data
+    };
+
+    axios(config)
   }
 
   render() {
@@ -17,7 +37,7 @@ export default class Listing extends React.Component{
       <div className="listelement">
         <div>{this.props.username}#{this.props.discriminator}</div>
         <div>{this.props.userId}</div>
-        <button>Contact</button>
+        <button onClick={this.handleServerLobbyRequest}>Contact</button>
       </div>
     );
   }
