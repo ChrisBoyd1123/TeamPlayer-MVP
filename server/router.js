@@ -7,7 +7,7 @@ const fs = require('fs');
 const path = require('path');
 
 //Import database interaction helper functions.
-const { findUserByNmDc, findUserBySession } = require('./db/helpers.js');
+const { findUserByNmDc, findUserBySession, addGame, findUsersGames } = require('./db/helpers.js');
 const { compareHash, verifySession } = require('../server/auth/authUtils.js');
 
 router.get('/', (req, res) => {
@@ -75,13 +75,45 @@ router.post('/signingIn', (req, res) => {
 
 router.get('/userData', (req, res) => {
   verifySession(req, res)
-  .then(() => {
+  .then((sessionPresent) => {
+    if(sessionPresent){
     const { session } = req.cookies;
 
     findUserBySession({session: session})
     .then((data) => {
       res.send(JSON.stringify(data[0]));
     })
+  }
+  })
+})
+
+router.get('/userGames', (req, res) => {
+  verifySession(req, res)
+  .then((sessionPresent) => {
+    if(sessionPresent){
+    const { session } = req.cookies;
+
+    findUsersGames(session)
+    .then((userGames) => {
+      res.send(JSON.stringify({userGames: userGames}));
+    })
+  }
+  })
+})
+
+router.post('/newGame', (req, res) => {
+  verifySession(req, res)
+  .then((sessionPresent) => {
+    const { gameName } = req.body;
+
+    if(sessionPresent && gameName){
+    const { session } = req.cookies;
+
+    addGame(session, gameName)
+    .then(() => {
+      res.sendStatus(200).send();
+    })
+    }
   })
 })
 
