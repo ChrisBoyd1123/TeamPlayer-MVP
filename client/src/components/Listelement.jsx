@@ -3,7 +3,7 @@ const React = require('react');
 const Cookies = require('js-cookie');
 const axios = require('axios');
 
-export default class Listing extends React.Component{
+export default class Listing extends React.PureComponent{
   constructor(props) {
     super(props);
 
@@ -36,10 +36,6 @@ export default class Listing extends React.Component{
         context.setState({lobbyMade: true});
       })
     }
-  }
-
-  shouldComponentUpdate(){
-    return false;
   }
 
   render() {
