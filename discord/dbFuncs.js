@@ -25,7 +25,7 @@ const checkInitUser = (userObj) => {
 module.exports.initUser = async (userObj) => {
   const userCheck = await checkInitUser(userObj)
   if(userCheck){
-    return "nope!";
+    return `You already have a key to your player profile! Check this bot's direct messages to you for a possible record of it.`;
   }
   
   const uKey = createKey();
@@ -44,5 +44,9 @@ module.exports.initUser = async (userObj) => {
     session: createSalt()
   })
 
-  return uKey;
+  return `This is your player profile key!
+
+  ||${uKey}||
+
+  Use it, along with your Discord username, in order to access your new profile on the Team Player web app!`
 }
