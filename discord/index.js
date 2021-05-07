@@ -37,6 +37,8 @@ client.on('ready', () => {
 //import bot-database interaction functions.
 const { initUser } = require('./dbFuncs.js');
 
+let teamPlayerGuild;
+
 ///////////////////
 
 client.on('guildMemberAdd', member => {
@@ -48,12 +50,79 @@ client.on('guildMemberAdd', member => {
     avatar: avatar
   })
   .then((key) => {
+    if(!teamPlayerGuild){
+      teamPlayerGuild = member.guild;
+    }
     member.user.send(key);
   })
   })
+
+  //NOTE:
+  //The DiscordJS message handler below is included for demo-ing purposes.
+  //A production build of Team Player should, likely, not include message-responsive
+  //functionality.
+  client.on('message', msg => {
+    const { username, discriminator, id, avatar } = msg.author;
+    if(msg.content === 'ping'){
+      initUser({
+        username: username,
+        discriminator: discriminator,
+        id: id,
+        avatar: avatar
+      })
+      .then((key) => {
+        msg.author.send(key);
+      })
+    }
+    })
+
+    client.on('teamPlayerCreateChannel', (user1Id, user2Id) => {
+      if(teamPlayerGuild){
+        teamPlayerGuild.channels.create('lobby', {
+          type: 'text',
+          permissionOverwrites: [
+            {
+              id: teamPlayerGuild.roles.everyone,
+              deny: ['VIEW_CHANNEL', 'SEND_MESSAGES', 'READ_MESSAGE_HISTORY']
+            },
+            {
+              id: user1Id,
+              allow: ['VIEW_CHANNEL', 'SEND_MESSAGES', 'READ_MESSAGE_HISTORY']
+            },
+            {
+              id: user2Id,
+              allow: ['VIEW_CHANNEL', 'SEND_MESSAGES', 'READ_MESSAGE_HISTORY']
+            }
+          ]
+        })
+
+        teamPlayerGuild.channels.create('lobby voice chat', {
+          type: 'voice',
+          permissionOverwrites: [
+            {
+              id: teamPlayerGuild.roles.everyone,
+              deny: ['VIEW_CHANNEL']
+            },
+            {
+              id: user1Id,
+              allow: ['VIEW_CHANNEL']
+            },
+            {
+              id: user2Id,
+              allow: ['VIEW_CHANNEL']
+            }
+          ]
+        })
+      }
+    })
+
+    const createLobbyChannel = (user1Id, user2Id) => {
+      client.emit('teamPlayerCreateChannel', user1Id, user2Id);
+    }
 
 ////////////////////////////
 // EXPORTING DISCORD BOT //
 //////////////////////////
 
 module.exports.BOT_CLIENT = client;
+module.exports.createServerLobby = createLobbyChannel;
