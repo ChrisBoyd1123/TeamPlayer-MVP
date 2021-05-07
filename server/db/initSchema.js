@@ -12,7 +12,7 @@ module.exports.initializeSchema = async () => {
     UserGame.belongsTo(User);
     UserGame.belongsTo(Game);
 
-  sequelize.sync({force: true})
+  sequelize.sync()
     .then(() => {
       resolve();
     })
