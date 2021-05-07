@@ -176,3 +176,84 @@ module.exports.findUserBySession = ({ session }) => {
     })
   })
 }
+
+//addGame should add an entry column to the Games table if a new
+//game has been added, before linking both the created game and
+//its associated user in UserGames.
+module.exports.addGame = (userSession, gameName) => {
+  return new Promise ((resolve, reject) => {
+    Game.findOne({ where: {game: gameName}})
+    .then((foundGame) => {
+      if(!foundGame){
+        //create game, then link with user in UserGames.
+        let gameEntryId;
+        let userEntryId;
+
+        Game.create({game: gameName})
+        .then((gameData) => {
+          gameEntryId = gameData.dataValues.id;
+
+          Session.findOne({ where: {session: userSession}})
+          .then((foundSession) => {
+            User.findOne({ where: {SessionId: foundSession.id}})
+            .then((foundUser) => {
+              userEntryId = foundUser.id;
+
+              UserGame.create({UserId: userEntryId, GameId: gameEntryId})
+              .then(() => {
+                resolve();
+              })
+            })
+          })
+        })
+      }else{
+        //check if game is already linked with user in UserGames.
+        Session.findOne({ where: {session: userSession}})
+          .then((foundSession) => {
+            User.findOne({ where: {SessionId: foundSession.id}})
+            .then((foundUser) => {
+              UserGame.findOne({where: {UserId: foundUser.id, GameId: foundGame.id}})
+              .then((foundUserGame) => {
+                if(!foundUserGame){
+                  //if not? Link game with user.
+                  UserGame.create({UserId: foundUser.id, GameId: foundGame.id})
+                  .then(() => {
+                    resolve();
+                  })
+                }else{
+                  resolve();
+                }
+              })
+            })
+          })
+      }
+    })
+  })
+}
+
+//TODO: A helper function that gets all the games
+//associated with a given user.
+
+module.exports.findUsersGames = (userSession) => {
+  return new Promise((resolve, reject) => {
+    Session.findOne({ where: {session: userSession}})
+          .then((foundSession) => {
+            User.findOne({ where: {SessionId: foundSession.id}})
+            .then((foundUser) => {
+              UserGame.findAll({ where: {UserId: foundUser.id}})
+              .then((userGameData) => {
+                let returnGames = [];
+                userGameData.forEach((userGameObj, uGOIndex) => {
+                  Game.findOne({ where: {id: userGameObj.dataValues.GameId}})
+                  .then((foundGame) => {
+                    returnGames.push(foundGame.game);
+                    if(returnGames.length === userGameData.length){
+                      resolve(returnGames);
+                    }
+                  })
+                })
+              })
+            })
+          })
+  })
+}
