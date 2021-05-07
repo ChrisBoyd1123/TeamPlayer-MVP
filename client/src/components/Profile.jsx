@@ -17,11 +17,15 @@ export default class Profile extends React.Component{
       username: null,
       discriminator: null,
       avatar: null,
+      games: ['Use the input below to add games!'],
     }
 
     this.handleLoadUser = this.handleLoadUser.bind(this);
+    this.handleLoadGames = this.handleLoadGames.bind(this);
+    this.handleGameSubmit = this.handleGameSubmit.bind(this);
     
     this.handleLoadUser();
+    this.handleLoadGames();
   }
 
   async handleLoadUser() {
@@ -30,8 +34,6 @@ export default class Profile extends React.Component{
       url: `/userData`
     };
     const { data } = await axios(config)
-
-    console.log(data);
 
     this.setState({username: data.username});
     this.setState({discriminator: 
@@ -43,11 +45,54 @@ export default class Profile extends React.Component{
     'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png'})
     }
 
+    async handleLoadGames() {
+      const config = {
+        method: 'get',
+        url: `/userGames`
+      };
+
+      const { data } = await axios(config)
+
+      if(data.userGames){
+        this.setState({games: data.userGames});
+      }
+    }
+
+    handleGameSubmit() {
+      const submittedGame = document.getElementById("gameInput").value;
+
+      if(submittedGame){
+        const data = JSON.stringify(
+          {"gameName":submittedGame});
+        
+        const config = {
+          method: 'post',
+          url: `/newGame`,
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          data : data
+        };
+
+        axios(config)
+        .then(() => {
+          window.location.replace(`/`);
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
+      }
+    }
+
   render() {
     return (
       <div className="profile">
         <div><img src={this.state.avatar}></img></div>
         <div>{this.state.username}#{this.state.discriminator}</div>
+        <div>{this.state.games.map(item => <div> {item} </div>)}</div>
+        <div>
+        <input type="text" id='gameInput'></input>
+        <button onClick={this.handleGameSubmit} id='submitButton'>Enter</button></div>
       </div>
     );
   }
