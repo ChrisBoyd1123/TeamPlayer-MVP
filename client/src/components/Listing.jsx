@@ -11,7 +11,7 @@ export default class Listing extends React.Component{
 
     this.state = {
       session: Cookies.get('session'),
-      users: ['null|null|null'],
+      users: [`no-one's|here!|:(`],
     }
 
     this.handleUWSGLoad = this.handleUWSGLoad.bind(this);
