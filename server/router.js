@@ -117,4 +117,19 @@ router.post('/newGame', (req, res) => {
   })
 })
 
+router.get('/listing', (req, res) => {
+  verifySession(req, res)
+  .then((sessionPresent) => {
+    res.writeHead(200, {'Content-Type': 'text/html'});
+      fs.readFile(path.join(__dirname, '../client/dist/listing.html'), 'utf8' , (err, data) => {
+        if (err) {
+          console.error(err)
+          return
+        }
+        res.write(data);
+        res.end();
+      })
+  })
+})
+
 module.exports.routes = router;
