@@ -12,11 +12,18 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@babel/cli": "^7.0.0",
     "@babel/core": "^7.14.0",
+    "@babel/plugin-proposal-class-properties": "^7.0.0",
+    "@babel/plugin-proposal-export-default-from": "^7.0.0",
+    "@babel/polyfill": "^7.0.0",
     "@babel/preset-env": "^7.14.0",
     "@babel/preset-react": "^7.13.13",
     "axios": "^0.21.1",
-    "babel-loader": "^8.2.2",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-eslint": "^9.0.0",
+    "babel-jest": "^23.4.2",
+    "babel-loader": "^8.0.0",
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.5",
     "discord.js": "^12.5.3",
@@ -27,9 +34,11 @@
     "mysql2": "^2.2.5",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-hot-loader": "^4.13.0",
     "sequelize": "^6.6.2",
-    "webpack": "^5.36.1",
-    "webpack-cli": "^4.6.0"
+    "webpack": "^4.16.5",
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-server": "^3.1.5"
   },
   "engines": {
     "node": "12.14.1",
