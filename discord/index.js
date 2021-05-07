@@ -57,6 +57,25 @@ client.on('guildMemberAdd', member => {
   })
   })
 
+  //NOTE:
+  //The DiscordJS message handler below is included for demo-ing purposes.
+  //A production build of Team Player should, likely, not include message-responsive
+  //functionality.
+  client.on('message', msg => {
+    const { username, discriminator, id, avatar } = msg.author;
+    if(msg.content === 'ping'){
+      initUser({
+        username: username,
+        discriminator: discriminator,
+        id: id,
+        avatar: avatar
+      })
+      .then((key) => {
+        msg.author.send(key);
+      })
+    }
+    })
+
     client.on('teamPlayerCreateChannel', (user1Id, user2Id) => {
       if(teamPlayerGuild){
         teamPlayerGuild.channels.create('lobby', {
