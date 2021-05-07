@@ -9,6 +9,7 @@ export default class Listing extends React.Component{
 
     this.state = {
       session: Cookies.get('session'),
+      lobbyMade: false,
     }
 
     this.handleServerLobbyRequest = this.handleServerLobbyRequest.bind(this);
@@ -29,7 +30,12 @@ export default class Listing extends React.Component{
       data : data
     };
 
-    axios(config)
+    if(!this.state.lobbyMade){
+      axios(config)
+      .then(() => {
+        context.setState({lobbyMade: true});
+      })
+    }
   }
 
   render() {
