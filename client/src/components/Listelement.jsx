@@ -36,7 +36,6 @@ export default class Listing extends React.Component{
     return (
       <div className="listelement">
         <div>{this.props.username}#{this.props.discriminator}</div>
-        <div>{this.props.userId}</div>
         <button onClick={this.handleServerLobbyRequest}>Contact</button>
       </div>
     );
