@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-
 // TODO
 const React = require('react');
 const Cookies = require('js-cookie');
@@ -84,9 +82,14 @@ export default class Profile extends React.Component{
       }
     }
 
+    handleListingLoad() {
+      window.location.replace(`/listing`)
+    }
+
   render() {
     return (
       <div className="profile">
+        <div><button onClick={this.handleListingLoad}>User Listings</button></div>
         <div><img src={this.state.avatar}></img></div>
         <div>{this.state.username}#{this.state.discriminator}</div>
         <div>{this.state.games.map(item => <div> {item} </div>)}</div>
