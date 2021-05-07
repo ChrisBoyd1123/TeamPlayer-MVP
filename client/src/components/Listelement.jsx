@@ -38,6 +38,10 @@ export default class Listing extends React.Component{
     }
   }
 
+  shouldComponentUpdate(){
+    return false;
+  }
+
   render() {
     return (
       <div className="listelement">
