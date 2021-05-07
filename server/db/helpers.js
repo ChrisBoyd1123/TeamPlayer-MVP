@@ -243,6 +243,10 @@ module.exports.findUsersGames = (userSession) => {
               UserGame.findAll({ where: {UserId: foundUser.id}})
               .then((userGameData) => {
                 let returnGames = [];
+                if(!userGameData || !userGameData.length){
+                  resolve(null);
+                  return;
+                }
                 userGameData.forEach((userGameObj, uGOIndex) => {
                   Game.findOne({ where: {id: userGameObj.dataValues.GameId}})
                   .then((foundGame) => {
