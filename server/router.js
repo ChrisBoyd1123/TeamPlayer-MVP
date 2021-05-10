@@ -7,7 +7,7 @@ const fs = require('fs');
 const path = require('path');
 
 //Import database interaction helper functions.
-const { findUserByNmDc, findUserBySession, addGame, findUsersGames, findUsersWithSimilarGames, findUserById } = require('./db/helpers.js');
+const { findUserByNmDc, findUserBySession, addGame, findUsersGames, findUsersWithSimilarGames, findUserById, findUsersByGame } = require('./db/helpers.js');
 const { compareHash, verifySession } = require('../server/auth/authUtils.js');
 
 const { createServerLobby } = require('../discord/index');
@@ -184,6 +184,30 @@ router.post('/createLobby', (req, res) => {
         const user1Id = userDataArr[0].userId;
         const user2Id = req.body.userId;
         createServerLobby(user1Id, user2Id);
+      })
+    }
+  })
+})
+
+router.post('/usersWithSearchedGame' , (req, res) => {
+  verifySession(req, res)
+  .then((sessionPresent) => {
+    if(sessionPresent){
+      const { session } = req.cookies;
+      const { gameName } = req.body;
+      findUsersByGame(gameName)
+      .then((usersWithGame) => {
+        findUserBySession({ session: session})
+        .then((data) => {
+          const { username } = data[0];
+          usersWithGame.forEach((userObj, uOIndex) => {
+            if(userObj.username === username){
+              usersWithSimilarGames.splice(uOIndex, 1);
+            }
+          })
+
+          res.send(JSON.stringify({UWG: usersWithGame}));
+        })
       })
     }
   })
