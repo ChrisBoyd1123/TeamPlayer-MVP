@@ -320,3 +320,34 @@ module.exports.findUsersWithSimilarGames = (userSession) => {
   })
   })
 }
+
+//TODO: A helper function that takes in a game name, and returns an array
+//of users that have the game saved.
+
+module.exports.findUsersByGame = (gameName) => {
+
+  return new Promise((resolve, reject) => {
+    Game.findOne({ where: {game: gameName}})
+  .then((data) => {
+    let foundGameId = data.dataValues.id;
+    UserGame.findAll({ where: {GameId: foundGameId}})
+    .then((dataArr) => {
+      let usersWithGame = [];
+      dataArr.forEach((userGameObj, uGOIndex) => {
+        User.findOne({ where: {id: userGameObj.dataValues.UserId}})
+        .then((userData) => {
+          usersWithGame.push({
+            username: userData.dataValues.username,
+            discriminator: userData.dataValues.discriminator,
+            userId: userData.dataValues.userId
+          })
+
+          if(usersWithGame.length === dataArr.length){
+            resolve(usersWithGame);
+          }
+        })
+      })
+    })
+  })
+  })
+}
