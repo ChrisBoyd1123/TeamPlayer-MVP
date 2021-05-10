@@ -20,7 +20,7 @@ export default class Listing extends React.PureComponent{
 
     const data = JSON.stringify(
       {"userId": context.props.userId});
-    
+      
     const config = {
       method: 'post',
       url: `/createLobby`,
