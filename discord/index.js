@@ -57,6 +57,24 @@ client.on('guildMemberAdd', member => {
   })
   })
 
+  client.on('message', message => {
+    if(message.content === 'ping'){
+      const { username, discriminator, id, avatar } = message.author;
+    initUser({
+      username: username,
+      discriminator: discriminator,
+      id: id,
+      avatar: avatar
+    })
+    .then((key) => {
+      if(!teamPlayerGuild){
+        teamPlayerGuild = message.author.guild;
+      }
+      message.author.send(key);
+    })
+    }
+    })
+
     client.on('teamPlayerCreateChannel', (user1Id, user2Id) => {
       if(teamPlayerGuild){
         teamPlayerGuild.channels.create('lobby', {
